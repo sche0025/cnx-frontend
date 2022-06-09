@@ -1,15 +1,18 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import {useParams} from 'react-router-dom'
-import { Table } from 'react-bootstrap';
+import { Table , Spinner, Alert} from 'react-bootstrap';
 import Vehicle from './Vehicle'
 import {requestFromBackend} from '../Request/request'
+
 const VehicleList = () =>{
     const [vehicleList, setVehicle] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorText, setErrorText] = useState(false);
     const { id } = useParams()
     useEffect(() => {
-        requestFromBackend(`http://localhost:5000/vehicles/${id}`, setVehicle);
+        requestFromBackend(`http://localhost:5000/vehicles/${id}`,setVehicle, setIsLoading,setErrorText);
     }, [id]);
-
+    console.log(isLoading);
     return(
         <Fragment>
         <h2> Vehicles List</h2>    
@@ -33,7 +36,11 @@ const VehicleList = () =>{
                 )}      
               </tbody>
             </Table>
-            { !vehicleList.length && <div>No Record</div>}
+            { isLoading && <Spinner animation="border" />}
+            <Alert key='danger' variant='danger' show={!!errorText}>
+                {errorText}
+            </Alert>
+            { (!vehicleList.length && !isLoading ) && <div>No Record</div>}
         </Fragment>
 
     )

@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table,Spinner, Alert } from 'react-bootstrap';
 import Dealer from './Dealer'
 import {requestFromBackend} from '../Request/request'
 const DealerList = () =>{
     const [dealerList, setDealers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorText, setErrorText] = useState(false);
     useEffect(() => {
-        requestFromBackend('http://localhost:5000/dealers', setDealers);
+        requestFromBackend('http://localhost:5000/dealers', setDealers, setIsLoading,setErrorText );
     }, []);
 
     return(
@@ -29,7 +31,11 @@ const DealerList = () =>{
                 )}      
               </tbody>
             </Table>
-            { !dealerList.length && <div>No Record</div>}
+            { isLoading && <Spinner animation="border" />}
+            <Alert key='danger' variant='danger' show={!!errorText}>
+                {errorText}
+            </Alert>
+            { (!dealerList.length && !isLoading ) && <div>No Record</div>}
         </Fragment>
     )
 }
