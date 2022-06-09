@@ -10,7 +10,7 @@ const VehicleList = () =>{
     const [errorText, setErrorText] = useState(false);
     const { id } = useParams()
     useEffect(() => {
-        requestFromBackend(`http://localhost:5000/vehicles/${id}`,setVehicle, setIsLoading,setErrorText);
+        requestFromBackend(`/api/vehicles/${id}`,setVehicle, setIsLoading,setErrorText);
     }, [id]);
     console.log(isLoading);
     return(

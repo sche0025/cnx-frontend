@@ -7,7 +7,7 @@ const DealerList = () =>{
     const [isLoading, setIsLoading] = useState(false);
     const [errorText, setErrorText] = useState(false);
     useEffect(() => {
-        requestFromBackend('http://localhost:5000/dealers', setDealers, setIsLoading,setErrorText );
+        requestFromBackend('/api/dealers', setDealers, setIsLoading,setErrorText );
     }, []);
 
     return(
